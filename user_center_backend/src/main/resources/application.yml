@@ -1,0 +1,94 @@
+# 公共配置文件
+spring:
+  application:
+    name: security_user_center
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  # todo 需替换配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/user_center
+    username: root
+    password: 12345600++
+    # Redis 配置
+    # todo 需替换配置
+    redis:
+      database: 1
+      host: localhost
+      port: 6379
+      timeout: 5000
+server:
+  address: 0.0.0.0
+  port: 8101
+  servlet:
+    context-path: /api
+    #    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true   #是否自动将数据库字段的下划线命名方式（例如 user_name）转换为驼峰命名方式（例如 userName）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.biu.security_user_center
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+# 不同用户不同的密码配置
+password:
+  strategy:
+    Admin: argon2
+    Manager: scrypt
+    Employee: pbkdf2
+    Guest: bcrypt
+    Customer: sha256Std
+
+# todo 需替换配置
+jwt:
+  secret: "xxx"
+  expire: 900000
+
+# todo 需替换配置
+justauth:
+  type:
+    github:
+      client-id: xxx
+      client-secret: xxx
+      redirect-uri: http://localhost:8101/api/auth/github/callback
+    gitee:
+      client-id: xxx
+      client-secret: xxx
+      redirect-uri: http://localhost:8101/api/auth/gitee/callback
+    dingtalk:
+      client-id: xxx
+      client-secret: xxx
+      redirect-uri: http://localhost:8101/api/auth/dingtalk/callback
+    google:
+      client-id: xxx
+      client-secret: xxx
+      redirect-uri: http://localhost:8101/api/auth/google/callback
+
